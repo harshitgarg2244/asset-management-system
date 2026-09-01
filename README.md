@@ -1,21 +1,3 @@
-# asset-management-system
-this is my main project
-Problem Statement - 
-Modern enterprises manage thousands of physical assets (laptops, monitors, mobile devices) and digital subscriptions (SaaS licenses, cloud credentials) distributed across hybrid and remote teams.
-Companies lose millions annually due to:
-Ghost Assets: Paying for SaaS licenses assigned to offboarded employees.
-Audit Failures: Inability to track asset movement, warranty expirations, and compliance history.
-Security & Access Risks: Unrestricted access where low-level staff can view or modify sensitive infrastructure assignments.
-This platform solves these problems by providing real-time tracking, automated audit logs, role-based access control (RBAC), and license lifecycle management.
-
-System Architecture & Tech Stack
-Frontend: React (Vite), Redux Toolkit / React Query, Tailwind CSS, Lucide React (Icons).
-Backend: Node.js, Express.js.
-Database: MongoDB (with Mongoose ORM).
-Caching & Queues: Redis, BullMQ.
-Storage & Auth: AWS S3 (for receipts/contracts), JWT + HTTP-Only Cookies.
-
-
 # AssetTrack — Enterprise Asset Management & Audit Platform
 
 A simplified, fully working version of the platform described in your blueprint document.
@@ -157,6 +139,7 @@ look it up (`.populate()`) when needed.
 ---
 
 ## 4. Known Simplifications (be upfront about these in interviews — it shows maturity)
+
 Your blueprint document describes a bigger system than what's built here, on purpose —
 you asked to keep it simple. Here's exactly what was simplified and why:
 
@@ -173,7 +156,10 @@ you asked to keep it simple. Here's exactly what was simplified and why:
 queues, email) can be dropped in later without changing the rest of the app, because the
 upload logic and business logic are already separated into their own files."
 
+---
+
 ## 5. Suggested Next Steps (to make your resume project even stronger)
+
 1. Add the SaaS License Seat Manager module (a new `License` model + CRUD, same pattern as Assets).
 2. Add CSV export for the Audit Logs page (`json2csv` on the backend).
 3. Swap local file storage for Cloudinary once you're comfortable — it's literally a resume keyword.

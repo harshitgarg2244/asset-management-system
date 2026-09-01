@@ -1,0 +1,23 @@
+Problem Statement
+Modern enterprises manage thousands of physical assets (laptops, monitors, mobile devices) and digital subscriptions (SaaS licenses, cloud credentials) distributed across hybrid and remote teams.
+
+Companies lose millions annually due to:
+
+Ghost Assets: Paying for SaaS licenses assigned to offboarded employees.
+
+Audit Failures: Inability to track asset movement, warranty expirations, and compliance history.
+
+Security & Access Risks: Unrestricted access where low-level staff can view or modify sensitive infrastructure assignments.
+
+This platform solves these problems by providing real-time tracking, automated audit logs, role-based access control (RBAC), and license lifecycle management.
+
+System Architecture & Tech Stack
+Frontend: React (Vite), Redux Toolkit / React Query, Tailwind CSS, Lucide React (Icons).
+
+Backend: Node.js, Express.js.
+
+Database: MongoDB (with Mongoose ORM).
+
+Caching & Queues: Redis, BullMQ.
+
+Storage & Auth: AWS S3 (for receipts/contracts), JWT + HTTP-Only Cookies.
