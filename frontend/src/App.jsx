@@ -25,8 +25,22 @@ function App() {
       <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path="/assets" element={<ProtectedRoute><AssetDirectory /></ProtectedRoute>} />
-      <Route path="/licenses" element={<ProtectedRoute><Licenses /></ProtectedRoute>} />
+      <Route
+        path="/assets"
+        element={
+          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'IT_MANAGER']}>
+            <AssetDirectory />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/licenses"
+        element={
+          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'IT_MANAGER']}>
+            <Licenses />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/my-assets" element={<ProtectedRoute><MyAssets /></ProtectedRoute>} />
       <Route path="/request-access" element={<ProtectedRoute><RequestAccess /></ProtectedRoute>} />
       <Route

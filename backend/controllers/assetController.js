@@ -20,11 +20,30 @@ const buildAssetQuery = ({ search, status, category }) => {
   return query;
 };
 
+// -----------------------------------------------------------------------
+// PRIVACY RULE shared by getAssets and exportAssets below: only Super
+// Admin and IT Manager get to see the WHOLE company's assignment map (who
+// has what). Every other role - Employee, Auditor - only ever sees assets
+// currently assigned to THEMSELVES, the same restriction the dedicated
+// /my-assets endpoint already enforces. Without this, any employee could
+// browse the Asset Directory (or export its CSV) and see exactly which
+// laptop every one of their coworkers has - a real privacy leak, not just
+// a "nice to hide in the UI" concern, since the API would otherwise still
+// return it to anyone who called it directly.
+// -----------------------------------------------------------------------
+const restrictQueryToOwnAssets = (query, user) => {
+  const canViewAll = ['SUPER_ADMIN', 'IT_MANAGER'].includes(user.role);
+  if (!canViewAll) {
+    return { ...query, assignedTo: user._id };
+  }
+  return query;
+};
+
 // @route  GET /api/v1/assets
 const getAssets = async (req, res) => {
   try {
     const { search, status, category } = req.query;
-    const query = buildAssetQuery({ search, status, category });
+    const query = restrictQueryToOwnAssets(buildAssetQuery({ search, status, category }), req.user);
 
     const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = Math.max(parseInt(req.query.limit) || 10, 1);
@@ -100,10 +119,14 @@ const getExpiringWarranties = async (req, res) => {
   try {
     const now = new Date();
     const windowEnd = new Date(now.getTime() + WARRANTY_WINDOW_DAYS * 24 * 60 * 60 * 1000);
+    // Deliberately NOT populating assignedTo here - this powers a banner
+    // visible to every logged-in user (any employee should be warned that
+    // warranties are expiring soon), and it has no business exposing WHO
+    // currently holds each asset to people outside Super Admin / IT Manager.
     const assets = await Asset.find({
       warrantyExpiry: { $gte: now, $lte: windowEnd },
       status: { $ne: 'RETIRED' },
-    }).populate('assignedTo', 'name').sort({ warrantyExpiry: 1 });
+    }).select('assetTag name warrantyExpiry status').sort({ warrantyExpiry: 1 });
 
     res.json({ windowDays: WARRANTY_WINDOW_DAYS, assets });
   } catch (error) {

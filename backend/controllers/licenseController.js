@@ -11,6 +11,23 @@ const getLicenses = async (req, res) => {
   }
 };
 
+// @route  GET /api/v1/licenses/my-licenses
+// -----------------------------------------------------------------------
+// The employee-facing equivalent of getMyAssets: shows ONLY the licenses
+// the current user personally holds a seat on, and never mentions who
+// else has a seat on the same license. This is what regular Employees
+// (and Auditors, under the new privacy rule) see instead of the full
+// getLicenses directory above.
+// -----------------------------------------------------------------------
+const getMyLicenses = async (req, res) => {
+  try {
+    const licenses = await License.find({ 'seats.user': req.user._id }).select('name vendor renewalDate');
+    res.json(licenses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getLicenseStats = async (req, res) => {
   try {
     const licenses = await License.find({});
@@ -88,4 +105,4 @@ const revokeSeat = async (req, res) => {
   }
 };
 
-module.exports = { getLicenses, getLicenseStats, createLicense, assignSeat, revokeSeat };
+module.exports = { getLicenses, getMyLicenses, getLicenseStats, createLicense, assignSeat, revokeSeat };
