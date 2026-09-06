@@ -28,7 +28,7 @@ function App() {
       <Route
         path="/assets"
         element={
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'IT_MANAGER']}>
+          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'IT_MANAGER', 'AUDITOR']}>
             <AssetDirectory />
           </ProtectedRoute>
         }
@@ -36,7 +36,7 @@ function App() {
       <Route
         path="/licenses"
         element={
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'IT_MANAGER']}>
+          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'IT_MANAGER', 'AUDITOR']}>
             <Licenses />
           </ProtectedRoute>
         }

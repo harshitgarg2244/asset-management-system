@@ -17,10 +17,12 @@ const Sidebar = () => {
   const canSeeAuditLogs = ['SUPER_ADMIN', 'AUDITOR'].includes(user.role);
   const canManageUsers = ['SUPER_ADMIN', 'AUDITOR'].includes(user.role);
   // PRIVACY RULE: the full Asset Directory and Licenses pages show WHO has
-  // WHAT across the whole company - only Super Admin / IT Manager should
-  // even see the link. Everyone else uses "My Assets" for their own view
-  // (which now also shows their own licenses).
-  const canSeeFullDirectories = ['SUPER_ADMIN', 'IT_MANAGER'].includes(user.role);
+  // WHAT across the whole company. Super Admin / IT Manager can manage it;
+  // Auditor gets the link too but strictly read-only (enforced by canManage
+  // inside those pages, which controls the actual create/assign/retire/
+  // revoke buttons - Auditor never sees those). Everyone else uses "My
+  // Assets" for their own view instead.
+  const canSeeFullDirectories = ['SUPER_ADMIN', 'IT_MANAGER', 'AUDITOR'].includes(user.role);
 
   const links = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
