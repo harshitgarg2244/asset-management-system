@@ -6,11 +6,11 @@ Built with the MERN stack (MongoDB, Express, React, Node.js).
 This README explains **how to run it**, **what each part does**, and **why** it's built this way —
 read it alongside the code.
 
----
+
 
 ## 1. Folder Structure
 
-```
+
 asset-management-platform/
 ├── backend/
 │   ├── config/
@@ -56,14 +56,14 @@ asset-management-platform/
     │   └── main.jsx                # React entry point
     ├── index.html
     └── package.json
-```
+
 
 **Why this structure?** It follows the **MVC-ish pattern** that almost every Express backend
 uses: `models` (data shape) → `controllers` (logic) → `routes` (URLs), with `middleware` as
 reusable checks that run before a controller. Interviewers will recognize this instantly —
 it's the industry-standard way to organize a Node API.
 
----
+
 
 ## 2. How to Run It Locally
 
@@ -76,25 +76,25 @@ it's the industry-standard way to organize a Node API.
    `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/`
 
 ### Step 2 — Set up the backend
-```bash
+bash
 cd backend
 npm install
 cp .env.example .env
-```
+
 Now open `.env` and paste in your MongoDB connection string (add `/asset-management` at
 the end of it so it creates a database with that name), and set any random string as `JWT_SECRET`.
 
-```bash
+bash
 npm run dev
-```
+
 You should see `Server running on http://localhost:5000` and `MongoDB Connected: ...`.
 
 ### Step 3 — Set up the frontend (in a new terminal)
-```bash
+bash
 cd frontend
 npm install
 npm run dev
-```
+
 Open the URL it prints (usually `http://localhost:5173`).
 
 ### Step 4 — Try it out
@@ -106,7 +106,6 @@ Open the URL it prints (usually `http://localhost:5173`).
 4. Log out, register a second account as "Employee", and check the "My Assets" page.
 5. Log back in as Super Admin and check "Audit Logs" — you'll see every action recorded.
 
----
 
 ## 3. Why the App Is Built This Way (Key Decisions Explained)
 
@@ -117,9 +116,9 @@ to remember anything about who's logged in — it just verifies the token's sign
 why JWT-based auth scales well and is the standard for REST APIs.
 
 **Role-Based Access Control (RBAC) enforced in TWO places.**
-- **Backend** (`roleMiddleware.js`): the real security boundary. Even if someone hacks the UI,
+ **Backend** (`roleMiddleware.js`): the real security boundary. Even if someone hacks the UI,
   the API itself refuses the request.
-- **Frontend** (`ProtectedRoute.jsx`, conditional buttons): just for a good user experience —
+ **Frontend** (`ProtectedRoute.jsx`, conditional buttons): just for a good user experience —
   hiding buttons/pages a user isn't allowed to use, so they don't hit dead ends.
 This "defense in depth" (checking on both sides) is a real interview talking point.
 
@@ -136,7 +135,7 @@ An `Asset` stores `assignedTo: <User ID>` rather than copying the employee's nam
 asset record. If the employee's name changes, we don't have to update every asset — we just
 look it up (`.populate()`) when needed.
 
----
+
 
 ## 4. Known Simplifications (be upfront about these in interviews — it shows maturity)
 
@@ -156,7 +155,7 @@ you asked to keep it simple. Here's exactly what was simplified and why:
 queues, email) can be dropped in later without changing the rest of the app, because the
 upload logic and business logic are already separated into their own files."
 
----
+
 
 ## 5. Suggested Next Steps (to make your resume project even stronger)
 
